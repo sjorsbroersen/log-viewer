@@ -20,9 +20,11 @@ class LogController extends Controller
 
             $viewer = new LogViewer($file);
 
+            $max_files = config("admin.extensions.log-viewer.max_files",20);
+
             $content->body(view('laravel-admin-logs::logs', [
                 'logs'      => $viewer->fetch($offset),
-                'logFiles'  => $viewer->getLogFiles(),
+                'logFiles'  => $viewer->getLogFiles($max_files),
                 'fileName'  => $viewer->file,
                 'end'       => $viewer->getFilesize(),
                 'tailPath'  => route('log-viewer-tail', ['file' => $viewer->file]),
